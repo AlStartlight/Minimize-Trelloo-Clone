@@ -1,17 +1,23 @@
 "use client";
 import { useState, useEffect } from "react";
 
+export type Board = {
+  id: string;
+  name: string;
+  ownerId?: string;
+};
+
 export function useBoards() {
-  const [boards, setBoards] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [boards, setBoards] = useState<Board[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Initial fetch from API
   useEffect(() => {
     async function fetchBoards() {
       try {
         const res = await fetch("/api/projects");
-        const data = await res.json();
-        setBoards(data);
+        const data: Board[] = await res.json();
+        setBoards(data ?? []);
       } catch (err) {
         console.error("Failed to fetch boards:", err);
       } finally {
@@ -22,22 +28,22 @@ export function useBoards() {
   }, []);
 
   // Add board via API
-  async function addBoard(name,owner) {
+  async function addBoard(name: string, owner: string) {
     try {
       const res = await fetch("/api/projects", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name,
-          ownerId: owner, // <- ganti ini dengan ID user aktif (bisa dari session)
+          ownerId: owner,
         }),
       });
 
-      const newBoard = await res.json();
-      if (!res.ok) throw new Error(newBoard.error || "Failed to add project");
-      setBoards([...boards, newBoard]);
-    } catch (err) {
-      console.error("Add board error:", err.message);
+      const newBoard: Board = await res.json();
+      if (!res.ok) throw new Error((newBoard as any).error || "Failed to add project");
+      setBoards((prev) => [...prev, newBoard]);
+    } catch (err: any) {
+      console.error("Add board error:", err?.message ?? err);
     }
   }
 
