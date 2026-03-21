@@ -1,5 +1,6 @@
 "use client";
 import { useBoards } from "@/hook/useBoard";
+import type { Board } from "@/hook/useBoard";
 import { Button } from "@/components/ui/button";
 import { Avatar , AvatarFallback } from "@/components/ui/avatar";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
@@ -41,7 +42,7 @@ export default function KanbanProject({ session,children }: { session: Session, 
         <section>
           <div className="font-bold mb-3 text-xl">Recently viewed</div>
           <div className="flex gap-4">
-            {boards.slice(-4).reverse().map(b => (
+            {boards.slice(-4).reverse().map((b: Board) => (
               <div key={b.id} className="bg-zinc-800 rounded-md w-44 h-20 flex items-end p-2 cursor-pointer hover:bg-zinc-700">
                 <div className="font-semibold">{b.name}</div>
               </div>
@@ -53,10 +54,9 @@ export default function KanbanProject({ session,children }: { session: Session, 
           <div className="font-bold mb-3 text-xl">Your Workspaces</div>
           <div className="mb-2 flex items-center gap-2">
             <Avatar className="h-6 w-6 bg-green-500" />
-            <span className="font-medium">EV Systems Engine Clup</span>
           </div>
           <div className="flex gap-4 flex-wrap">
-            {boards.map(b => (
+            {boards.map((b: Board) => (
             <Link  href={`/dashboard/${b.id}`} key={b.id}>
               <div key={b.id} className="bg-zinc-800 rounded-md w-44 h-20 flex items-end p-2 cursor-pointer hover:bg-zinc-700">
                 <div className="font-semibold">{b.name}</div>
