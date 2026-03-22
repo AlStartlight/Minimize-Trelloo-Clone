@@ -1,7 +1,7 @@
 // app/api/tasks/[taskId]/route.ts
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
-import authOptions from '@/app/api/auth/[...nextauth]/authOptions';
+import { getAuthOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function PUT(
@@ -10,7 +10,7 @@ export async function PUT(
 ) {
   const { taskId } = await params;
   // 1. Verifikasi session
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(getAuthOptions());
   const userId = session?.user?.id;
   if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

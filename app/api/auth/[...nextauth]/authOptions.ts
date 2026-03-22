@@ -63,6 +63,3 @@ export function getAuthOptions(): AuthOptions {
     debug: process.env.NODE_ENV === "development",
   }
 }
-
-const authOptions = getAuthOptions()
-export default authOptions

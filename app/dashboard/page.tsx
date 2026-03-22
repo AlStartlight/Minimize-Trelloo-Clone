@@ -1,12 +1,12 @@
 
 import '@/app/globals.css'
 import { getServerSession } from "next-auth";
-import authOptions from "@/app/api/auth/[...nextauth]/authOptions";
+import { getAuthOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import KanbanProject from '@/components/kanban/KanbanProject';
 import Sidebar from '@/components/kanban/Sidebar';
 
 export default async function DashboardPage() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(getAuthOptions());
 
   if (!session) {
     return (

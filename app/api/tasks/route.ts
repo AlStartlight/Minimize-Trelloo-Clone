@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
-import authOptions from '@/app/api/auth/[...nextauth]/authOptions';
+import { getAuthOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { z, type ZodIssue } from 'zod';
 
 const CheckItemSchema = z.object({
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
     const { title, description, status, projectId, assigneeId } = validation.data;
 
     // Verifikasi session & akses project
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession(getAuthOptions());
     const userId = session?.user?.id;
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -135,7 +135,7 @@ export async function GET(
 ) {
   const { projectId } = await params;
   // 1. Verifikasi session
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(getAuthOptions());
   const userId = session?.user?.id;
   if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
