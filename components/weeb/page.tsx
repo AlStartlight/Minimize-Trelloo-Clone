@@ -23,9 +23,7 @@ const WeepApps = () => {
      <SpeedComponents/>
      <TestimonialsComponents/>
     </div>
-    <div className="bg-white min-h-screen overflow-hidden flex flex-col items-center justify-center text-white">
-     <EventsComponents/>
-    </div>
+    <EventsComponents/>
     <Footer/>
     </>
   );
