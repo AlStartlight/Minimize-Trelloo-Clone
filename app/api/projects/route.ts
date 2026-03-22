@@ -1,6 +1,6 @@
 // app/api/projects/route.ts
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'; // sesuaikan path jika berbeda
+import authOptions from '@/app/api/auth/[...nextauth]/authOptions';
 import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 

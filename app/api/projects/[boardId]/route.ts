@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
+import authOptions from '@/app/api/auth/[...nextauth]/authOptions';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(_: NextRequest, { params }: { params: Promise<{ boardId: string }> }) {

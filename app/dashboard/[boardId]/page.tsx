@@ -1,7 +1,7 @@
 
 import '@/app/globals.css'
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import authOptions from "@/app/api/auth/[...nextauth]/authOptions";
 import KanbanDashboard from "@/components/kanban/KanbanBoard";
 import Sidebar from '@/components/kanban/Sidebar';
 
