@@ -62,7 +62,7 @@ export default function InviteMemberDialog({
     fetchSuggestions();
   }, [debouncedQuery]);
 
-  const onChange = (_: React.FormEvent<HTMLInputElement>, { newValue }: { newValue: string }) => {
+  const onChange = (_: React.FormEvent<HTMLElement>, { newValue }: { newValue: string }) => {
     setValue(newValue);
     setRawQuery(newValue);
     setSelected(null);
@@ -78,7 +78,7 @@ export default function InviteMemberDialog({
     </div>
   );
 
-  const onSuggestionSelected = (_: React.FormEvent<HTMLInputElement>, { suggestion }: { suggestion: Suggestion }) => {
+  const onSuggestionSelected = (_: React.FormEvent<HTMLElement>, { suggestion }: { suggestion: Suggestion }) => {
     setSelected(suggestion);
     setValue(suggestion.name);
   };
