@@ -44,72 +44,79 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --radius: 0.5rem;
+  --background: #f5f6f8;
+  --foreground: #172b4d;
+  --card: #ffffff;
+  --card-foreground: #172b4d;
+  --popover: #ffffff;
+  --popover-foreground: #172b4d;
+  --primary: #0079bf;
+  --primary-foreground: #ffffff;
+  --secondary: #eaeaea;
+  --secondary-foreground: #172b4d;
+  --muted: #f5f6f8;
+  --muted-foreground: #6b778c;
+  --accent: #0079bf;
+  --accent-foreground: #ffffff;
+  --destructive: #eb5a46;
+  --border: #dfe1e6;
+  --input: #dfe1e6;
+  --ring: #0079bf;
+  --chart-1: #0079bf;
+  --chart-2: #61bd4f;
+  --chart-3: #ffab00;
+  --chart-4: #eb5a46;
+  --chart-5: #c377e0;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #172b4d;
+  --sidebar-primary: #0079bf;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f5f6f8;
+  --sidebar-accent-foreground: #172b4d;
+  --sidebar-border: #dfe1e6;
+  --sidebar-ring: #0079bf;
+  --board-bg: #0079bf;
+  --column-bg: rgba(0, 0, 0, 0.12);
+  --trello-bg: #f5f6f8;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --radius: 0.5rem;
+  --background: #161616;
+  --foreground: #e0e0e0;
+  --card: #1e1e1e;
+  --card-foreground: #e0e0e0;
+  --popover: #1e1e1e;
+  --popover-foreground: #e0e0e0;
+  --primary: #0079bf;
+  --primary-foreground: #ffffff;
+  --secondary: #2d2d2d;
+  --secondary-foreground: #e0e0e0;
+  --muted: #2d2d2d;
+  --muted-foreground: #9e9e9e;
+  --accent: #0079bf;
+  --accent-foreground: #ffffff;
+  --destructive: #eb5a46;
+  --border: #404040;
+  --input: #404040;
+  --ring: #0079bf;
+  --chart-1: #4dabf7;
+  --chart-2: #69db7c;
+  --chart-3: #ffd43b;
+  --chart-4: #ff8787;
+  --chart-5: #da77f2;
+  --sidebar: #1e1e1e;
+  --sidebar-foreground: #e0e0e0;
+  --sidebar-primary: #0079bf;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #2d2d2d;
+  --sidebar-accent-foreground: #e0e0e0;
+  --sidebar-border: #404040;
+  --sidebar-ring: #0079bf;
+  --board-bg: #026aa7;
+  --column-bg: rgba(0, 0, 0, 0.24);
+  --trello-bg: #161616;
 }
 
 @layer base {
@@ -118,5 +125,20 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .board-bg {
+    background-color: var(--board-bg);
+  }
+  .trello-bg {
+    background-color: var(--trello-bg);
+  }
+  .column-bg {
+    background-color: var(--column-bg);
+  }
+  .sidebar-bg {
+    background-color: var(--sidebar);
   }
 }
