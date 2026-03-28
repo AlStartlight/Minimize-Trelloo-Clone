@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Task, Project, User } from "@/lib/types";
-import { PlusIcon, CheckSquare, Eye, Edit2, Search, LayoutGrid, Users, Wifi, WifiOff } from "lucide-react";
+import { PlusIcon, CheckSquare, Eye, Edit2, Search, LayoutGrid, Users, Wifi, WifiOff, Trash2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import {
   DragDropContext,
@@ -85,6 +85,23 @@ export default function KanbanDashboard({
   const projectId = boardId;
   const [projectDetail, setProjectDetail] = useState<Project | null>(null);
   const [teamMembers, setTeamMembers] = useState<User[]>([]);
+
+  const currentUserRole = useMemo(() => {
+    const userId = session?.user?.id;
+    if (!userId) return null;
+    if (projectDetail?.ownerId === userId) return "owner";
+    const member = teamMembers.find(m => m.id === userId);
+    return member?.role || "developer";
+  }, [teamMembers, session?.user?.id, projectDetail?.ownerId]);
+
+  const assignableMembers = useMemo(() => {
+    if (!currentUserRole) return [];
+    if (currentUserRole === "owner" || currentUserRole === "developer") {
+      return teamMembers;
+    }
+    // reviewer or tester can only assign to developers
+    return teamMembers.filter(m => m.role === "developer");
+  }, [currentUserRole, teamMembers]);
 
   // Socket integration for real-time updates
   const socket = useSocket({
@@ -209,7 +226,7 @@ export default function KanbanDashboard({
   const handleSaveEdit = async () => {
     if (!selectedTask) return;
     try {
-      const assigneeIdToSend = (selectedTask as { assignedToId?: string; assigneeId?: string }).assignedToId || (selectedTask as { assignedToId?: string; assigneeId?: string }).assigneeId || selectedTask.assignedTo?.id || null;
+      const assigneeIdToSend = selectedTask.assigneeId ?? null;
       const res = await fetch(`/api/tasks/taskdragged/${selectedTask.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -229,6 +246,23 @@ export default function KanbanDashboard({
     } catch (err: unknown) {
       console.error(err);
       toast.error(err instanceof Error ? err.message : "Failed to update task");
+    }
+  };
+
+  const handleDeleteTask = async () => {
+    if (!selectedTask) return;
+    try {
+      const res = await fetch(`/api/tasks/taskdragged/${selectedTask.id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to delete task");
+      toast.success("Task deleted");
+      setOpenEditDialog(false);
+      setSelectedTask(null);
+      await fetchTasks();
+    } catch (err: unknown) {
+      console.error(err);
+      toast.error(err instanceof Error ? err.message : "Failed to delete task");
     }
   };
 
@@ -548,7 +582,7 @@ export default function KanbanDashboard({
                                     <SelectValue placeholder="Select assignee" />
                                   </SelectTrigger>
                                   <SelectContent>
-                                    {teamMembers.map((member) => (
+                                    {assignableMembers.map((member) => (
                                       <SelectItem key={member.id} value={member.id}>
                                         {member.name || member.email}
                                       </SelectItem>
@@ -633,6 +667,24 @@ export default function KanbanDashboard({
                     <Input value={selectedTask.description ?? ''} onChange={(e) => setSelectedTask({ ...selectedTask, description: e.target.value })} />
                   </div>
                   <div className="grid gap-2">
+                    <Label>Assign to</Label>
+                    <Select
+                      value={selectedTask.assigneeId ?? ''}
+                      onValueChange={(value) => setSelectedTask({ ...selectedTask, assigneeId: value || null })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select assignee" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {assignableMembers.map((member) => (
+                          <SelectItem key={member.id} value={member.id}>
+                            {member.name || member.email}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid gap-2">
                     <Label>Checklist</Label>
                     <ul className="space-y-2 max-h-48 overflow-y-auto">
                       {(selectedTask.checkItems ?? []).map((c, idx) => (
@@ -664,6 +716,12 @@ export default function KanbanDashboard({
                   </div>
                   <div className="flex justify-end gap-2">
                     <Button variant="outline" onClick={() => { setOpenEditDialog(false); setSelectedTask(null); }}>Cancel</Button>
+                    {(projectDetail?.ownerId === session?.user?.id || selectedTask?.creatorId === session?.user?.id) && (
+                      <Button variant="destructive" onClick={handleDeleteTask}>
+                        <Trash2 className="h-4 w-4 mr-1" />
+                        Delete
+                      </Button>
+                    )}
                     <Button onClick={handleSaveEdit}>Save Changes</Button>
                   </div>
                 </div>

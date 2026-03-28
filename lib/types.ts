@@ -7,7 +7,9 @@ export interface User {
   password: string;
   ownedProjects: Project[];
   assignedTasks: Task[];
+  createdTasks: Task[];
   memberships: Membership[];
+  role?: string;
 }
 
 export interface Session {
@@ -43,6 +45,8 @@ export interface Task {
   project: Project;
   assigneeId?: string | null;
   assignedTo?: User | null;
+  creatorId?: string | null;
+  creator?: User | null;
   checkItems?: {
     id: string;
     text: string;

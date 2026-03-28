@@ -35,6 +35,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ proj
     orderBy: { createdAt: 'desc' },
     include: {
       assignedTo: { select: { id: true, name: true, email: true } },
+      creator: { select: { id: true, name: true, email: true } },
       checkItems: { orderBy: { order: 'asc' } },
     },
   });

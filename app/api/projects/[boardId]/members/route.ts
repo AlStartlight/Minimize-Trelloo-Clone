@@ -11,7 +11,7 @@ export async function POST(
   const { boardId: projectId } = await params;
   const session = await getServerSession(getAuthOptions());
   const userId = session?.user?.id;
-  const { email, role = "member" } = await req.json();
+  const { email, role = "developer" } = await req.json();
 
   if (!userId || !email) {
     return NextResponse.json({ error: "Unauthorized or missing email" }, { status: 401 });

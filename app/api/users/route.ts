@@ -18,11 +18,12 @@ export async function GET(request: NextRequest) {
   // Cari project + owner + members
   const project = await prisma.project.findUnique({
     where: { id: projectId },
-    include: {
+    select: {
       owner: { select: { id: true, name: true, email: true } },
       members: {
-        include: {
-          user: { select: { id: true, name: true, email: true } }
+        select: {
+          user: { select: { id: true, name: true, email: true } },
+          role: true
         }
       }
     }
@@ -33,14 +34,19 @@ export async function GET(request: NextRequest) {
   }
 
   // Gabungkan owner + members (hindari duplikat jika owner juga dr membership)
-  const allUsersMap: Record<string, { id: string; name: string | null; email: string }> = {};
+  const allUsersMap: Record<string, { id: string; name: string | null; email: string; role: string }> = {};
 
-  // Tambah owner
-  allUsersMap[project.owner.id] = project.owner;
+  // Tambah owner with role "owner"
+  allUsersMap[project.owner.id] = { ...project.owner, role: "owner" };
 
-  // Tambah members
+  // Tambah members with their membership role
   for (const m of project.members) {
-    allUsersMap[m.user.id] = m.user;
+    // If owner is also a member (should not happen), keep role as "owner"
+    if (m.user.id === project.owner.id) {
+      allUsersMap[m.user.id] = { ...m.user, role: "owner" };
+    } else {
+      allUsersMap[m.user.id] = { ...m.user, role: m.role || "developer" };
+    }
   }
 
   const allUsers = Object.values(allUsersMap);

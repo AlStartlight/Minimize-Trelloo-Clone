@@ -18,6 +18,7 @@ const TaskSchema = z.object({
   status: z.string().optional().default("todo"),
   projectId: z.string().min(1, "Project ID is required"),
   assigneeId: z.string().nullable().optional(),
+  creatorId: z.string().nullable().optional(),
   checkItems: z.array(CheckItemSchema).optional(),
 });
 
@@ -93,6 +94,7 @@ export async function POST(req: NextRequest) {
         status,
         projectId,
         assigneeId: assigneeId || null,
+        creatorId: userId,
         checkItems: validation.data.checkItems
           ? {
               create: validation.data.checkItems.map((c) => ({
@@ -106,6 +108,7 @@ export async function POST(req: NextRequest) {
       include: {
         checkItems: true,
         assignedTo: { select: { id: true, name: true, email: true } },
+        creator: { select: { id: true, name: true, email: true } },
       },
     });
 

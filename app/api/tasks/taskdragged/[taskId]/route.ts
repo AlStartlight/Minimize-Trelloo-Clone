@@ -72,11 +72,52 @@ export async function PUT(
         checkItems: { orderBy: { order: 'asc' } },
         project: { include: { members: true } },
         assignedTo: { select: { id: true, name: true, email: true } },
+        creator: { select: { id: true, name: true, email: true } },
       },
     });
     return NextResponse.json(refreshed);
   } catch (err: unknown) {
     console.error('Failed to update task status:', err);
     return NextResponse.json({ error: 'Update failed' }, { status: 500 });
+  }
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ taskId: string }> }
+) {
+  const { taskId } = await params;
+  const session = await getServerSession(getAuthOptions());
+  const userId = session?.user?.id;
+  if (!userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const task = await prisma.task.findUnique({
+    where: { id: taskId },
+    include: { project: { include: { members: true } }, creator: true },
+  });
+  if (!task) {
+    return NextResponse.json({ error: 'Task not found' }, { status: 404 });
+  }
+
+  const project = task.project;
+  const isOwner = project.ownerId === userId;
+  const isCreator = task.creatorId === userId;
+  if (!isOwner && !isCreator) {
+    return NextResponse.json({ error: 'Delete not allowed' }, { status: 403 });
+  }
+
+  try {
+    // Delete associated check items first
+    await prisma.taskCheckItem.deleteMany({ where: { taskId } });
+    // Delete associated review requests
+    await prisma.reviewRequest.deleteMany({ where: { taskId } });
+    // Delete task
+    await prisma.task.delete({ where: { id: taskId } });
+    return NextResponse.json({ message: 'Task deleted' });
+  } catch (err: unknown) {
+    console.error('Failed to delete task:', err);
+    return NextResponse.json({ error: 'Delete failed' }, { status: 500 });
   }
 }
