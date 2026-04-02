@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-
+keren keren keren
 export type Board = {
-  id: string;
+  id: string
   name: string;
   ownerId?: string;
 };
